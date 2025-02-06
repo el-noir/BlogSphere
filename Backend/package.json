@@ -1,0 +1,20 @@
+{
+  "name": "blog_site",
+  "version": "1.0.0",
+  "description": "A blog site ",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "keywords": [
+    "blog",
+    "crud",
+    "site"
+  ],
+  "author": "el-noir",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

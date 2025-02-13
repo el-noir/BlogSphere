@@ -29,5 +29,13 @@ router.route('/:id').get(
     },
     verifyJWT, getBlogById);
 
+// Route to update a blog (only the author can update)
+router.route('/:id').put(
+    (req, res, next) => {
+        console.log('Update blog route hit!');
+        next(); // Continue to the updateBlog controller
+    },
+    verifyJWT, updateBlog);
+
 
 export default router;

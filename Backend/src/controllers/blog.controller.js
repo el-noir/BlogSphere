@@ -4,7 +4,7 @@ import { ApiError } from '../utils/ApiError.js';
 import { uploadOnCloudinary } from '../utils/cloudinary.js';
 
 // Create a blog post
-export const createBlog = asyncHandler(async (req, res) => {
+const createBlog = asyncHandler(async (req, res) => {
     // Validate the input
     const { title, content } = req.body;
     if (!title || !content) {
@@ -39,3 +39,21 @@ export const createBlog = asyncHandler(async (req, res) => {
         blog: newBlog,
     });
 });
+
+const getBlogsByUser = asyncHandler(async (req, res) => {
+    // Find all blogs by the logged-in user
+    const blogs = await Blog.find({ author: req.user._id });
+
+    // If no blogs are found, throw an error
+    if (!blogs || blogs.length === 0) {
+        throw new ApiError(404, "No blogs found for this user");
+    }
+
+    // Return the blogs
+    res.status(200).json({
+        success: true,
+        blogs,
+    });
+});
+
+export {createBlog, getBlogsByUser}

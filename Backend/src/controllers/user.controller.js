@@ -2,6 +2,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { User } from '../models/user.model.js';
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { uploadOnCloudinary } from '../utils/cloudinary.js';
 
 const generateAccessAndRefreshToken = async (userId) => {
     try{
@@ -176,4 +177,59 @@ const logoutUser = asyncHandler(async(req, res) => {
     return res.status(200).json(new ApiResponse(200, user, "User profile fetched successfully"));
 });
 
-export { registerUser, loginUser, logoutUser, profileUser} ;
+const uploadAvatar = asyncHandler(async (req, res) => {
+    if (!req.file) {
+        throw new ApiError(400, "No file uploaded");
+    }
+
+    const uploadResponse = await uploadOnCloudinary(req.file.path);
+
+    if (!uploadResponse) {
+        throw new ApiError(500, "Error uploading avatar");
+    }
+
+    // Update user's avatar URL in the database
+    const user = await User.findById(req.user._id);
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    user.avatar = uploadResponse.url;  // Assuming you store the avatar URL in the user's model
+    await user.save();
+
+    res.status(200).json({
+        success: true,
+        message: "Avatar uploaded successfully",
+        avatarUrl: uploadResponse.url
+    });
+});
+
+// Upload Cover
+ const uploadCover = asyncHandler(async (req, res) => {
+    if (!req.file) {
+        throw new ApiError(400, "No file uploaded");
+    }
+
+    const uploadResponse = await uploadOnCloudinary(req.file.path);
+
+    if (!uploadResponse) {
+        throw new ApiError(500, "Error uploading cover");
+    }
+
+    // Update user's cover URL in the database
+    const user = await User.findById(req.user._id);
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    user.coverImage = uploadResponse.url;  // Assuming you store the cover URL in the user's model
+    await user.save();
+
+    res.status(200).json({
+        success: true,
+        message: "Cover image uploaded successfully",
+        coverUrl: uploadResponse.url
+    });
+});
+
+export { registerUser, loginUser, logoutUser, profileUser, uploadAvatar, uploadCover} ;

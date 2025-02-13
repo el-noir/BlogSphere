@@ -21,7 +21,7 @@ function RegisterPage() {
     e.preventDefault();
   
     try {
-      const response = await axios.post("http://localhost:8000/api/v1/users/register", formData);
+      const response = await axios.post("/api/v1/users/register", formData);
   
       console.log("User registered successfully:", response.data);
     } catch (error) {

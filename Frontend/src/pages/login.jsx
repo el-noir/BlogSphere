@@ -11,10 +11,10 @@ function LoginPage() {
     setError("");
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/users/login",
+        "/api/v1/users/login", 
         { email, password },
         { withCredentials: true }
-      );
+    );    
       console.log("Login successful:", response.data);
       alert("Login successful");
     } catch (err) {

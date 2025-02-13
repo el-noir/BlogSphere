@@ -157,4 +157,23 @@ const logoutUser = asyncHandler(async(req, res) => {
    )
   })
 
-export { registerUser, loginUser, logoutUser } ;
+  const profileUser = asyncHandler(async (req, res, next) => {
+    console.log("Fetching user profile...");
+
+    // Ensure the user is authenticated
+    if (!req.user || !req.user._id) {
+        throw new ApiError(401, "Unauthorized: User not authenticated");
+    }
+
+    // Fetch user profile, excluding sensitive fields
+    const user = await User.findById(req.user._id).select("-password -refreshToken");
+
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    // Respond with user profile data
+    return res.status(200).json(new ApiResponse(200, user, "User profile fetched successfully"));
+});
+
+export { registerUser, loginUser, logoutUser, profileUser} ;

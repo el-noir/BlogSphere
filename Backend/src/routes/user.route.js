@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { registerUser, loginUser, logoutUser } from '../controllers/user.controller.js';
+import { registerUser, loginUser, logoutUser, profileUser } from '../controllers/user.controller.js';
 import { verifyJWT } from '../middlewares/auth.middleware.js';
 const router = new Router();
 
@@ -19,10 +19,10 @@ router.route("/logout").post((req, res, next) => {
 
 },verifyJWT, logoutUser);
 
-// router.route("profile").post((req, res, next)=> {
-//   console.log("Profile route hit!")
-//   next(); // Continue to the profileUser controller
+router.route("/profile").get((req, res, next)=> {
+  console.log("Profile route hit!")
+  next(); // Continue to the profileUser controller
 
-// }, profileUser);
+},verifyJWT, profileUser);
 
 export default router;

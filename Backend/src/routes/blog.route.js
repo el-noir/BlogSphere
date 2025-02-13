@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createBlog, getBlogsByUser } from '../controllers/blog.controller.js';
+import { createBlog, getBlogsByUser, getBlogById, updateBlog, deleteBlog } from '../controllers/blog.controller.js';
 import { verifyJWT } from '../middlewares/auth.middleware.js';
 import { upload } from '../middlewares/multer.middleware.js';
 
@@ -18,7 +18,16 @@ router.route("/user-blogs").get(
     (req, res, next) => {
         console.log('Get user blogs route hit!');
         next(); // Continue to the getBlogsByUser controller
-    }  ,
+    },
     verifyJWT, getBlogsByUser);
+
+// Route to get a blog by ID
+router.route('/:id').get(
+    (req, res, next) => {
+        console.log('Get blog by ID route hit!');
+        next(); // Continue to the getBlogById controller
+    },
+    verifyJWT, getBlogById);
+
 
 export default router;

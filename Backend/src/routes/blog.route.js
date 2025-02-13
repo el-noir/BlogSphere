@@ -1,9 +1,17 @@
+
 import { Router } from 'express';
-import { verifyJWT } from '../middlewares/auth.middleware.js';
 import { createBlog } from '../controllers/blog.controller.js';
+import { verifyJWT } from '../middlewares/auth.middleware.js';
+import { upload } from '../middlewares/multer.middleware.js'; // Assuming multer setup is in utils/multer.js
 
-const blogRouter = new Router();
+const router = new Router();
 
-blogRouter.route('/').post(verifyJWT, createBlog);
+// Route to create a new blog post (Authenticated users only)
+router.route("/create").post(
+    (req, res, next) => {
+        console.log('Create blog route hit!');
+        next(); // Continue to the createBlog controller
+    },
+    verifyJWT, upload.single('coverImage'), createBlog);
 
-export default blogRouter;
+export default router;

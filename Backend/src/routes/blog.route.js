@@ -37,5 +37,12 @@ router.route('/:id').put(
     },
     verifyJWT, updateBlog);
 
+// Route to delete a blog (only the author can delete)
+router.route('/:id').delete(
+    (req, res, next) => {
+        console.log('Delete blog route hit!');
+        next(); // Continue to the deleteBlog controller
+    },
+    verifyJWT, deleteBlog);
 
 export default router;

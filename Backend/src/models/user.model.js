@@ -30,11 +30,9 @@ const UserSchema = new Schema(
 
         avatar: { //cloudinary url
             type: String,
-            required: false, // Make this optional
         },
         coverImage: { 
             type: String,
-            required: false, // Make this optional
         },
         watchHistory: {
             type: Schema.Types.ObjectId,
@@ -84,8 +82,9 @@ UserSchema.methods.generateRefreshToken = function(){
         },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
-
     );
 };
+
+
 
 export const  User = mongoose.model('User', UserSchema);

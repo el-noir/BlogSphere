@@ -1,6 +1,5 @@
 import mongoose, {Schema} from "mongoose";
 
-
 const blogSchema = new Schema({
     title: {
         type: String,
@@ -18,10 +17,6 @@ const blogSchema = new Schema({
         ref: 'User',
         required: true
     },
-    comments: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
-    }],
     likes: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -33,8 +28,6 @@ const blogSchema = new Schema({
     coverImage: {
         type: String
     },
-
-
 }, {timestamps: true});
 
 export const Blog = mongoose.model('Blog',blogSchema)

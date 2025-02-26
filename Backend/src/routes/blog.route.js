@@ -12,7 +12,7 @@ router.route("/create").post(
         next(); // Continue to the createBlog controller
     },
     verifyJWT, upload.single('coverImage'), createBlog);
-
+    
 // Route to get all blogs by the logged-in user
 router.route("/user-blogs").get(
     (req, res, next) => {
